@@ -1,0 +1,24 @@
+<head></head>
+<body>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script>
+  function LoadFile() {
+      setInterval(function() {
+          $.ajax({
+            url: "update.py",
+            cache: false
+          }).done(function( html ) {
+          });
+
+          $.ajax({
+            url: "file.txt",
+            cache: false
+          }).done(function( html ) {
+            $("#results").text(html);
+          });
+      }, 2000); // update every 2 seconds
+    }
+  
+  </script>
+  <pre id="results"></pre>
+  <script> LoadFile() </script>
