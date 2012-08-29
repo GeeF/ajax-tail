@@ -1,16 +1,30 @@
-import sys
 from flask import Flask
-app = Flask('updateFlask')
+from flask import render_template
+from flask import redirect
+from flask import url_for
+from flask import request
+app = Flask(__name__)
 
-@app.route("/")
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        restart()
+    return render_template('template.html') 
+
+@app.route('/update')
 def update():
+    ''' Update server log '''
     tl = tail_lines('/var/log/syslog',10,1)
     f = file('/path/to/www/file.txt', 'w')
     for line in tl:
         # TODO: split line if too long
         f.write(line + "\n")
     f.close()
-    return "OK"
+    return redirect(url_for('index'))
+
+@app.route('/getFile')
+def getFile():
+    return ''.join([l for l in file('/path/to/www/file.txt')])
 
 def tail_lines(filename,linesback=10,returnlist=0):
     '''Does what "tail -10 filename" would have done
@@ -42,3 +56,7 @@ def tail_lines(filename,linesback=10,returnlist=0):
     out=""
     for l in lines[start:len(lines)-1]: out=out + l + "\n"
     return out
+
+if __name__ == '__main__':
+    app.debug = True
+    app.run(host='0.0.0.0', port=80)

@@ -1,3 +1,5 @@
+<!doctype html>
+<title>TITLE</title>
 <head></head>
 <body>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -5,13 +7,13 @@
   function LoadFile() {
       setInterval(function() {
           $.ajax({
-            url: "update.py",
+            url: "update",
             cache: false
           }).done(function( html ) {
           });
 
           $.ajax({
-            url: "file.txt",
+            url: "getFile",
             cache: false
           }).done(function( html ) {
             $("#results").text(html);
